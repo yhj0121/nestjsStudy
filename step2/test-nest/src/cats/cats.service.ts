@@ -2,4 +2,9 @@ import { Injectable } from '@nestjs/common';
 
 //injectable = provider
 @Injectable()
-export class CatsService {}
+export class CatsService {
+
+  getHello() {
+    return 'hello world';
+  }
+}

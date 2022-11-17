@@ -4,6 +4,8 @@ import { CatsService } from './cats.service';
 
 @Module({
   controllers: [CatsController],
-  providers: [CatsService]
+  providers: [CatsService],
+  exports: [CatsService], //내보내기 해줘야 외부에서 사용가능 public으로 바꿔준 상태
+
 })
 export class CatsModule {}
