@@ -1,26 +1,26 @@
-import { AuthService } from './../auth/auth.service';
-import { CatRequestDto } from './dto/cats.request.dto';
-import { CatsService } from './cats.service';
+import { Cat } from './cats.schema';
 import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Patch,
-  HttpException,
-  UseFilters,
-  Param,
-  ParseIntPipe,
-  UseInterceptors,
   Body,
+  Req,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/common/exception/http.exception.filter';
-import { SucessInterceptor } from 'src/common/interceptors/sucess.interceptor';
+import { Controller, Get, Post } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
+import { CatsService } from './cats.service';
+import { CatRequestDto } from './dto/cats.request.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ReadOnlyCatDto } from './dto/cat.dto';
-import { LoginRequestDto } from 'src/auth/dto/login.RequestDto';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
+import { CatCurrentDto } from './dto/cats.current.dto';
+
 @Controller('cats')
-@UseInterceptors(SucessInterceptor)
+@UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class CatsController {
   constructor(
@@ -29,9 +29,11 @@ export class CatsController {
   ) {}
 
   @ApiOperation({ summary: '현재 고양이 가져오기' })
+  @UseGuards(JwtAuthGuard)
   @Get()
-  getCurrentCat() {
-    return 'current cat';
+  getCurrentCat(@CurrentUser() cat: CatCurrentDto) {
+    console.log(cat);
+    return cat.readOnlyData;
   }
 
   @ApiResponse({
@@ -46,19 +48,13 @@ export class CatsController {
   @ApiOperation({ summary: '회원가입' })
   @Post()
   async signUp(@Body() body: CatRequestDto) {
-    return await this.catsService.signup(body);
+    return await this.catsService.signUp(body);
   }
 
   @ApiOperation({ summary: '로그인' })
   @Post('login')
   logIn(@Body() data: LoginRequestDto) {
-    return this.authService.login(data);
-  }
-
-  @ApiOperation({ summary: '로그아웃' })
-  @Post('logout')
-  logOut() {
-    return 'logout';
+    return this.authService.jwtLogIn(data);
   }
 
   @ApiOperation({ summary: '고양이 이미지 업로드' })

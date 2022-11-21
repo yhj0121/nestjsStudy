@@ -1,7 +1,16 @@
 import { CatsService } from './cats.service';
-import { Controller, Get, Post, Put, Patch, HttpException, UseFilters, Param, ParseIntPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/http.exception.filter';
-
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Patch,
+  HttpException,
+  UseFilters,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/common/exception/http.exception.filter';
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
 export class CatsController {
@@ -12,8 +21,8 @@ export class CatsController {
   //필터코드를 다 맞춰서 나오게함
   getAllCat() {
     throw new HttpException('api is broken', 401);
-  
-  return 'all cats';
+
+    return 'all cats';
   }
 
   @Get(':id')
@@ -36,5 +45,4 @@ export class CatsController {
   patchId() {
     return 'pateh';
   }
-
 }
