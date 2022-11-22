@@ -29,4 +29,13 @@ export class CatsRepository {
   async create(cat: CatRequestDto): Promise<Cat> {
     return await this.catModel.create(cat);
   }
+
+  async findByIdAndUpdatImg(Id: string, fileName: string) {
+    const cat = await this.catModel.findById(Id); //password만 안가져오겟다는거
+    cat.imgUrl = `http://localhost:8080/media/${fileName}`;
+
+    const newcat = await cat.save();
+
+    return newcat.readOnlyData;
+  }
 }

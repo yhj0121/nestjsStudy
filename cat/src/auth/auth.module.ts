@@ -6,6 +6,7 @@ import { JwtStrategy } from './jwt/jwt.strategy';
 import { CatsModule } from 'src/cats/cats.module';
 import { ConfigModule } from '@nestjs/config';
 
+//config 설정을 위해 configModule.forRoot()가져오기
 @Module({
   imports: [
     ConfigModule.forRoot(),

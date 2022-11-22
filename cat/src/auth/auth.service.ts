@@ -3,6 +3,7 @@ import { CatsRepository } from 'src/cats/cats.repository';
 import { LoginRequestDto } from './dto/login.request.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Cat } from 'src/cats/cats.schema';
 
 @Injectable()
 export class AuthService {
