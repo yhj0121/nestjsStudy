@@ -32,8 +32,8 @@ export class CatsController {
   @UseGuards(JwtAuthGuard)
   @Get()
   getCurrentCat(@CurrentUser() cat: CatCurrentDto) {
-    console.log(cat);
-    return cat.readOnlyData;
+    console.log(cat); //req.user
+    return cat.readOnlyData; //virtural 필드
   }
 
   @ApiResponse({

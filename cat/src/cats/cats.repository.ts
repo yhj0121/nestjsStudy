@@ -12,7 +12,7 @@ export class CatsRepository {
   async findCatByIdWithoutPassword(
     catId: string,
   ): Promise<CatCurrentDto | null> {
-    const cat = await this.catModel.findById(catId).select('-password');
+    const cat = await this.catModel.findById(catId).select('-password'); //password만 안가져오겟다는거
     return cat;
   }
 
