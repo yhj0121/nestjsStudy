@@ -7,6 +7,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { CommentController } from './comment/comment.controller';
+import { CommentService } from './comment/comment.service';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -19,9 +22,10 @@ import { AuthModule } from './auth/auth.module';
     }),
     CatsModule,
     AuthModule,
+    CommentModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, CommentController],
+  providers: [AppService, CommentService],
 })
 export class AppModule implements NestModule {
   private readonly isDev: boolean = process.env.MODE === 'dev' ? true : false;

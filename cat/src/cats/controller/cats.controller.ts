@@ -39,6 +39,12 @@ export class CatsController {
     return cat.readOnlyData; //virtural 필드
   }
 
+  @ApiOperation({ summary: '전체 고양이 가져오기' })
+  @Get('all')
+  getAllCat() {
+    return ''; //virtural 필드
+  }
+
   @ApiResponse({
     status: 500,
     description: 'Server Error...',

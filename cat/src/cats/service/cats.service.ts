@@ -37,4 +37,10 @@ export class CatsService {
 
     return uploadImg;
   }
+
+  async getAllCat() {
+    const result = await this.catsRepository.findAll();
+    const withOutPassword = result.map((mapdata) => mapdata.readOnlyData);
+    return withOutPassword;
+  }
 }
