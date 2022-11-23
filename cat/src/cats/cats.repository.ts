@@ -32,7 +32,7 @@ export class CatsRepository {
 
   async findByIdAndUpdatImg(Id: string, fileName: string) {
     const cat = await this.catModel.findById(Id); //password만 안가져오겟다는거
-    cat.imgUrl = `http://localhost:8080/media/${fileName}`;
+    cat.imgUrl = `${fileName}`;
 
     const newcat = await cat.save();
 

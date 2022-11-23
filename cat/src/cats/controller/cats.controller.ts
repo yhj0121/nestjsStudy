@@ -21,6 +21,7 @@ import { CatCurrentDto } from '../dto/cats.current.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multerOption';
 import { CatsService } from '../service/cats.service';
+import { AmazonS3FileInterceptor } from 'nestjs-multer-extended';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
@@ -42,7 +43,7 @@ export class CatsController {
   @ApiOperation({ summary: '전체 고양이 가져오기' })
   @Get('all')
   getAllCat() {
-    return ''; //virtural 필드
+    return this.catsService.getAllCat(); //virtural 필드
   }
 
   @ApiResponse({
@@ -67,12 +68,13 @@ export class CatsController {
   }
 
   @ApiOperation({ summary: '고양이 이미지 업로드' })
-  @UseInterceptors(FilesInterceptor('image', 10, multerOptions('cats')))
+  @UseInterceptors(
+    AmazonS3FileInterceptor('file', {
+      dynamicPath: 'cats',
+    }),
+  )
   @Post('upload')
-  uploadFile(
-    @UploadedFiles() files: Array<Express.Multer.File>,
-    @CurrentUser() cat: Cat,
-  ) {
+  uploadFile(@UploadedFile() file: any, @CurrentUser() cat: Cat) {
     // return {image: `http://localhost:8080/media/uploads/cat/${files[0].filename}`};
     return this.catsService.uploadImg(cat, files);
   }

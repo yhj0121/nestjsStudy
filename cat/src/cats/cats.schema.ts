@@ -65,6 +65,6 @@ CatSchema.virtual('readOnlyData').get(function (this: Cat) {
     id: this.id,
     email: this.email,
     name: this.name,
-    img: this.imgUrl,
+    img: this.imgUrl, //sc경로로 수정
   };
 });
