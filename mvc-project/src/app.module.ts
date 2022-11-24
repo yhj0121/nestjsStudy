@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { ChatModule } from './chat/chat.module';
-import { ChatModule } from './chat/chat.module';
 import * as mongoose from 'mongoose';
 
 @Module({
