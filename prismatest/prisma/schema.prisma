@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+//Prisma Client를 기반으로 생성되어야 하는 클라이언트를 정의한다.
+generator client {
+  provider = "prisma-client-js"
+}
+
+//Prisma가 연결해야하는 데이터베이스에 접속 시 필요한 정보를
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//primsma는 이런식으로 필드 타입 필드 속성(어노테이션으로 등록)
+model User {
+  user_id  Int      @id @default(autoincrement())
+  nickname String   @unique @db.VarChar(12)
+  email    String   @db.VarChar(30)
+  password String?  @db.Text //?는 nullable Text는 해쉬하니까
+  provider PROVIDER @default(LOCAL)
+  agree    Boolean  @db.Boolean
+
+  posts Post[] //1대n관계 한유저는 여러글 쓸수 있으니 posts로 복수 형식
+}
+
+enum PROVIDER {
+  LOCAL
+  KAKAO
+  NAVER
+}
+
+model Post {
+  post_id    Int      @id @default(autoincrement())
+  content    String   @db.VarChar(200)
+  thumbnail  String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  author_id  Int
+
+  author User @relation(fields: [author_id], references: [user_id], onDelete: Cascade)
+}
