@@ -15,7 +15,7 @@ app.get("/", async (req, res, next) => {
   }
 });
 
-app.post("/", async (res, res) => {
+app.post("/", async (req, res) => {
   try {
     const newUser = await prisma.user.create({
       data: {
@@ -26,7 +26,9 @@ app.post("/", async (res, res) => {
         agree: false,
       },
     });
+    return res.status(200).json({ newUser });
   } catch (err) {
+    return res.status(500).json({ err });
     console.log(err);
   }
 });
