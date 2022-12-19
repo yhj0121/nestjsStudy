@@ -20,6 +20,7 @@ model User {
   password String?  @db.Text //?는 nullable Text는 해쉬하니까
   provider PROVIDER @default(LOCAL)
   agree    Boolean  @db.Boolean
+  name     String?  @db.VarChar(16)
 
   posts Post[] //1대n관계 한유저는 여러글 쓸수 있으니 posts로 복수 형식
 }

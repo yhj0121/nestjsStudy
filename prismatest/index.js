@@ -15,6 +15,49 @@ app.get("/", async (req, res, next) => {
   }
 });
 
+app.get("/user", async (req, res) => {
+  try {
+    const page = req.query.page;
+    const [users, userCount] = await Promise.all([
+      prisma.user.findMany({
+        take: 12, //페이지 개수
+        skip: 12 * (page - 1), //페이지 위치
+        orderBy: {
+          user_id: "desc", //내림차순
+        },
+        select: {
+          nickname: true,
+          email: true,
+          user_id: true,
+        },
+      }),
+      prisma.user.count(), //총 유저 갯수
+    ]);
+    return res.status(200).json({ users, maxCount: Math.ceil(userCount / 12) });
+  } catch (err) {
+    return res.status(500).json({ err });
+  }
+});
+
+app.get("/:id", async (req, res) => {
+  const userId = req.params.id;
+  //유니크 값만 보내기
+  const user = await prisma.user.findUnique({
+    where: {
+      user_id: Number(userId),
+    },
+    select: {
+      user_id: true,
+      name: true,
+      email: true,
+      nickname: true,
+    },
+  });
+  // delete user.password; //객체 안에 있는 속성 삭제
+
+  return res.status(200).json({ user });
+});
+
 app.post("/", async (req, res) => {
   try {
     const newUser = await prisma.user.create({
@@ -30,6 +73,19 @@ app.post("/", async (req, res) => {
   } catch (err) {
     return res.status(500).json({ err });
     console.log(err);
+  }
+});
+
+app.delete("/", async (req, res) => {
+  try {
+    const deleteUser = await prisma.user.delete({
+      where: {
+        user_id: Number(req.body.user_id),
+      },
+    });
+    return res.status(200).json({ deleteUser });
+  } catch (err) {
+    return res.status(500).json({ messgae: "data error" });
   }
 });
 
