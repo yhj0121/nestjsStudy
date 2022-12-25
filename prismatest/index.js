@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const { PrismaClient } = require("@prisma/client");
+const { restart } = require("nodemon");
 
 const prisma = new PrismaClient();
 
@@ -87,6 +88,44 @@ app.delete("/", async (req, res) => {
   } catch (err) {
     return res.status(500).json({ messgae: "data error" });
   }
+});
+
+//select 문 못씀
+//바뀐 개수(count)나옴
+app.patch("/", async (req, res) => {
+  try {
+    const updateMany = prisma.user.updateMany({
+      where: {
+        provider: "NAVER",
+      },
+      data: {
+        provider: "LOCAL",
+      },
+    });
+    return res.status(200).json({ updateMany });
+  } catch (err) {
+    return res.status(500).json({ err });
+  }
+});
+//select 사용 가능
+app.patch("/id", async (req, res) => {
+  const update = await prisma.user.update({
+    where: {
+      user_id: Number(req.params.id),
+    },
+    data: {
+      ...req.body,
+    },
+    select: {
+      name: true,
+      nickname: true,
+      provider: true,
+    },
+  });
+});
+
+app.patch("/upsert", async (req, res) => {
+  const upsertData = await prisma.upsert({});
 });
 
 app.listen(3005, () => {
