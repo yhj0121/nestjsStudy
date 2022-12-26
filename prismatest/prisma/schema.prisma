@@ -23,6 +23,7 @@ model User {
   name     String?  @db.VarChar(16)
 
   posts Post[] //1대n관계 한유저는 여러글 쓸수 있으니 posts로 복수 형식
+  likes Like[]
 }
 
 enum PROVIDER {
@@ -40,4 +41,21 @@ model Post {
   author_id  Int
 
   author User @relation(fields: [author_id], references: [user_id], onDelete: Cascade)
+  likes Like[]
+}
+
+model Like {
+  author_id Int
+  post_id   Int
+
+  author User @relation(fields: [author_id], references: [user_id], onDelete: Cascade)
+  post   Post @relation(fields: [post_id], references: [post_id], onDelete: Cascade)
+ 
+  @@id([author_id, post_id])
+
+}
+
+model tag {
+  tag_id Int @id @default(autoincrement())
+  content String @db.VarChar(0)
 }
