@@ -40,8 +40,8 @@ model Post {
   updated_at DateTime @updatedAt
   author_id  Int
 
-  author User @relation(fields: [author_id], references: [user_id], onDelete: Cascade)
-  likes Like[]
+  author User   @relation(fields: [author_id], references: [user_id], onDelete: Cascade)
+  likes  Like[]
 }
 
 model Like {
@@ -50,12 +50,11 @@ model Like {
 
   author User @relation(fields: [author_id], references: [user_id], onDelete: Cascade)
   post   Post @relation(fields: [post_id], references: [post_id], onDelete: Cascade)
- 
-  @@id([author_id, post_id])
 
+  @@id([author_id, post_id])
 }
 
 model tag {
-  tag_id Int @id @default(autoincrement())
-  content String @db.VarChar(0)
+  tag_id  Int    @id @default(autoincrement())
+  content String @db.VarChar(12)
 }
