@@ -10,13 +10,24 @@ async function inputTags() {
   try {
     let i = 0;
     while (i < 10000) {
-      const newTag = await prisma.tag.create({
+      // const newTag = await prisma.tag.create({
+      //   data: {
+      //     content: contents[i % 5],
+      //   },
+      // });
+      // console.log(newTag);
+      // i++;
+
+      const body = await prisma.tag.update({
+        where: {
+          tag_id: i + 1,
+        },
         data: {
-          content: contents[i % 5],
+          posts: Math.round(Math.random() * 100),
         },
       });
-      console.log(newTag);
       i++;
+      console.log(i);
     }
   } catch (err) {
     console.log(err);

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "tag" ADD COLUMN     "posts" INTEGER NOT NULL DEFAULT 0;

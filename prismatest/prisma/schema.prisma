@@ -57,4 +57,5 @@ model Like {
 model tag {
   tag_id  Int    @id @default(autoincrement())
   content String @db.VarChar(12)
+  posts   Int?    @default(0)
 }
