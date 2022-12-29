@@ -17,6 +17,35 @@ router.get("/", async (req, res) => {
   }
 });
 
+//distinit는 데이터 중복 제거
+router.get("/dis", async (req, res) => {
+  const tags = await prisma.tag.findMany({
+    orderBy: {
+      tag_id: "desc",
+    },
+    distinit: [],
+  });
+});
+
+//집계함수
+router.get("/arg", async (req, res) => {
+  const arg = await prisma.tag.aggregate({
+    _count: true,
+    _avg: {
+      posts: true,
+    },
+    _sum: {
+      posts: true,
+    },
+    _min: {
+      post: true,
+    },
+    _max: {
+      posts: true,
+    },
+  });
+  return res.status(200).json({ arg });
+});
 router.post("/", async (req, res) => {});
 
 module.exports = router;
