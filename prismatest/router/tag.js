@@ -23,7 +23,7 @@ router.get("/dis", async (req, res) => {
     orderBy: {
       tag_id: "desc",
     },
-    distinit: [],
+    distinit: ["posts", "content"],
   });
 });
 
@@ -45,6 +45,16 @@ router.get("/arg", async (req, res) => {
     },
   });
   return res.status(200).json({ arg });
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const tags = await prisma.tag.groupby({
+      by: ["content"],
+    });
+  } catch (err) {
+    return res.status(500).json({ err });
+  }
 });
 router.post("/", async (req, res) => {});
 
