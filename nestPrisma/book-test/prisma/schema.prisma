@@ -82,7 +82,6 @@ model OrderInfo {
   order_id Int
   book_id  Int
   amount   Int @default(1)
-  price    Int @default(1)
 
   book Book @relation(fields: [book_id], references: [book_id])
 
