@@ -11,10 +11,21 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String?
-  email String  @unique
-  posts Post[]
+  id       Int       @id @default(autoincrement())
+  name     String?
+  email    String    @db.VarChar(40)
+  posts    Post[]
+  userInfo UserInfo?
+  reViews  Review[]
+  carts    Cart[]
+  orders   Order[]
+}
+
+model UserInfo {
+  info_id  Int    @id @default(autoincrement())
+  password String @db.Text
+  user_id  Int    @unique
+  user     User   @relation(fields: [user_id], references: [id])
 }
 
 // Define the `Post` table in the database
@@ -23,6 +34,59 @@ model Post {
   published Boolean? @default(false)
   title     String
   content   String?
-  author    User?    @relation(fields: [authorId], references: [id])
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int?
+}
+
+model Book {
+  book_id    Int         @id @default(autoincrement())
+  title      String      @db.VarChar(40)
+  publisher  String      @db.VarChar(20)
+  author     String      @db.VarChar(10)
+  price      Int         @default(0)
+  reViews    Review[]
+  carts      Cart[]
+  orderInfos OrderInfo[]
+}
+
+model Review {
+  user_id    Int
+  book_id    Int
+  created_at DateTime @default(now())
+  book       Book     @relation(fields: [book_id], references: [book_id])
+  user       User     @relation(fields: [user_id], references: [id])
+
+  @@id([created_at, user_id, book_id])
+}
+
+model Cart {
+  book_id Int
+  user_id Int
+  amount  Int   @default(0)
+  book    Book? @relation(fields: [book_id], references: [book_id])
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@id([book_id, user_id])
+}
+
+model Order {
+  order_id   Int         @id @default(autoincrement())
+  created_at DateTime    @default(now())
+  user_id    Int
+  user       User        @relation(fields: [user_id], references: [id])
+  orderinfos OrderInfo[]
+}
+
+model OrderInfo {
+  order_id Int
+  book_id  Int
+  amount   Int @default(1)
+  price    Int @default(1)
+
+  book Book @relation(fields: [book_id], references: [book_id])
+
+  order Order @relation(fields: [order_id], references: [order_id])
+
+  @@id([book_id, order_id])
 }
