@@ -9,6 +9,14 @@ export class BookService {
   }
 
   getPost(): string {
-    return this.prismaService.book.create({});
+    const data = new Array(10000).fill().map(() => ({
+      title: faker.lorem.lines(),
+      pushlisher: faker.company.bs(),
+      author: faker.internet.userName(),
+      price: Math.ceil(Math.random() * 1000),
+    }));
+    return this.prismaService.book.createMany({
+      data,
+    });
   }
 }
