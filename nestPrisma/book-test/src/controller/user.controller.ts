@@ -6,6 +6,7 @@ import {
   Get,
   Query,
   ParseIntPipe,
+  Param,
 } from '@nestjs/common';
 
 @Controller('user')
@@ -25,5 +26,10 @@ export class UserController {
   @Get()
   getFaker(@Query('page', ParseIntPipe) page) {
     return this.userService.getFaker(page);
+  }
+
+  @Get('reviews/:bookid')
+  getBookService(@Param() param) {
+    return this.userService.getBookservice(param);
   }
 }

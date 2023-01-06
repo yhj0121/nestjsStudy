@@ -50,13 +50,15 @@ model Book {
 }
 
 model Review {
+  review_id Int @id @default(autoincrement())
   user_id    Int
   book_id    Int
   created_at DateTime @default(now())
+  content    String   @db.VarChar(120)
+  rating     Int      @default(0)
   book       Book     @relation(fields: [book_id], references: [book_id])
   user       User     @relation(fields: [user_id], references: [id])
 
-  @@id([created_at, user_id, book_id])
 }
 
 model Cart {
