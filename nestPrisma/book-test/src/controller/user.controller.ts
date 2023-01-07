@@ -29,7 +29,12 @@ export class UserController {
   }
 
   @Get('reviews/:bookid')
-  getBookService(@Param() param) {
+  getBookService(@Param('bookid') param) {
     return this.userService.getBookservice(param);
+  }
+
+  @Post('reviews/:bookid')
+  postBookservice(@Body() body, @Param('bookid') param) {
+    return this.userService.postBookService(param);
   }
 }
