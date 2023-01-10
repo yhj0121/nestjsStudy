@@ -57,4 +57,15 @@ export class UserService {
       },
     });
   }
+  async getBookservice(payload) {
+    return await this.prismaService.book.findMany({
+      where: {
+        book_id: payload.book_id,
+      },
+    });
+  }
+
+  async postBookService(payload) {
+    return await this.prismaService.book.create({});
+  }
 }
