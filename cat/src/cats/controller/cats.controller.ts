@@ -74,7 +74,7 @@ export class CatsController {
     }),
   )
   @Post('upload')
-  uploadFile(@UploadedFile() file: any, @CurrentUser() cat: Cat) {
+  uploadFile(@UploadedFiles() file: any, @CurrentUser() cat: Cat) {
     // return {image: `http://localhost:8080/media/uploads/cat/${files[0].filename}`};
     return this.catsService.uploadImg(cat, files);
   }

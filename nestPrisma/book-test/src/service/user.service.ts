@@ -58,14 +58,48 @@ export class UserService {
     });
   }
   async getBookservice(payload) {
-    return await this.prismaService.book.findMany({
+    return await this.prismaService.review.findMany({
       where: {
-        book_id: payload.book_id,
+        book_id: payload,
+      },
+      include: {
+        user: true,
       },
     });
   }
 
-  async postBookService(payload) {
-    return await this.prismaService.book.create({});
+  async postBookService(payload, book_id) {
+    return await this.prismaService.review.create({
+      data: {
+        user_id: Number(book_id),
+        book_id,
+        content: payload.content,
+        rating: Number(payload.rating) > 5 ? 5 : Number(payload.rating),
+      },
+    });
+  }
+
+  async deleteUser(userId) {
+    return await this.prismaService.user.delete({
+      where: {
+        user_id: userId,
+      },
+    });
+  }
+
+  async getBookList(bookId) {
+    return await this.prismaService.book.findMany({
+      where: {
+        book_id: bookId,
+      },
+    });
+  }
+
+  async getBookName(name) {
+    return await this.prismaService.book.findMany({
+      where: {
+        name: name,
+      },
+    });
   }
 }
