@@ -98,7 +98,20 @@ export class UserService {
   async getBookName(name) {
     return await this.prismaService.book.findMany({
       where: {
-        name: name,
+        title: {
+          contains: name, //단어가 포함이 된 title만 가져옴
+        },
+      },
+    });
+  }
+
+  async getBookName2(name) {
+    return await this.prismaService.book.findMany({
+      where: {
+        title: {
+          search: name, //search를 사용하면 and or not같은거 사용가능
+          //네이버|naver
+        },
       },
     });
   }

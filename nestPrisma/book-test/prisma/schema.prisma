@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -50,7 +51,7 @@ model Book {
 }
 
 model Review {
-  review_id Int @id @default(autoincrement())
+  review_id  Int      @id @default(autoincrement())
   user_id    Int
   book_id    Int
   created_at DateTime @default(now())
@@ -58,7 +59,6 @@ model Review {
   rating     Int      @default(0)
   book       Book     @relation(fields: [book_id], references: [book_id])
   user       User     @relation(fields: [user_id], references: [id])
-
 }
 
 model Cart {
