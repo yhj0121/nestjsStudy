@@ -60,7 +60,7 @@ router.post("/like", async (req, res) => {
     return res.status(500).json({ err });
   }
 });
-
+//author 필드 추가
 router.get("/like:id", async (req, res) => {
   try {
     const likes = await prisma.like.findMany({
