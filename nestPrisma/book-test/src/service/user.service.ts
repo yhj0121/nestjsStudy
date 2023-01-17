@@ -115,4 +115,29 @@ export class UserService {
       },
     });
   }
+  //unique쓸때 폭합키일 경우에는 이렇게 사용
+  async getMyCartList(userId) {
+    return await this.prismaService.cart.findUnique({
+      where: {
+        book_id_user_id: {
+          user_id: userId,
+        },
+      },
+      include: {
+        book: true,
+      },
+    });
+  }
+
+  async PostMyCartList(datas) {
+    return await this.prismaService.cart.create({
+      data: {
+        datas,
+      },
+    });
+  }
+
+  async postOrder(data) {
+    const newOrder = await this.prismaService.order.create({});
+  }
 }

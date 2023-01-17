@@ -48,4 +48,19 @@ export class UserController {
   getBookListService(@Param('bookid', ParseIntPipe) bookId) {
     return this.userService.getBookList(bookId);
   }
+
+  @Get('cart/:userId')
+  getMyCartList(@Param('userId', ParseIntPipe) userId) {
+    return this.userService.getMyCartList(userId);
+  }
+
+  @Post('cart')
+  postCartList(@Body() body) {
+    return this.userService.PostMyCartList(body);
+  }
+
+  @Post('order')
+  postOrder(@Body() body) {
+    return this.userService.PostMyCartList(body);
+  }
 }
