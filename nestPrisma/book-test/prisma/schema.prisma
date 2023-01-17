@@ -76,8 +76,13 @@ model Order {
   order_id   Int         @id @default(autoincrement())
   created_at DateTime    @default(now())
   user_id    Int
+  payment_id String      @unique
   user       User        @relation(fields: [user_id], references: [id])
   orderinfos OrderInfo[]
+
+  // @@index([payment([sort:Desc]),order_id([sort:Asc]),created_at])
+  // @@index([payment],type:Gin)  인덱스 생성B-tree나 Gin같은거
+    @@index([payment_id],type:Hash)
 }
 
 model OrderInfo {
