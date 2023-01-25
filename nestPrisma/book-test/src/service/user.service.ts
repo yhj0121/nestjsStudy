@@ -138,6 +138,30 @@ export class UserService {
   }
 
   async postOrder(data) {
-    const newOrder = await this.prismaService.order.create({});
+    const newOrder = await this.prismaService.order.create({
+      data: {
+        user_id: data.user_id,
+        paymeny_id: faker.datatype.uuid(),
+      },
+    });
+
+    const { order_id } = await this.PrismaService.order.create({
+      data: {
+        user_id: data.user_id,
+        paymeny_id: faker.datatype.uuid(),
+      },
+    });
+    const datas = data.book_id.split(',').map((book_id) => {});
+    const orderInfos = await this.prismaService.orderInfo.createMany({
+      data: {
+        order_id: order_id,
+      },
+    });
+  }
+
+  async CategoryService(data) {
+    return this.prismaService.cart.create({
+      data: {},
+    });
   }
 }

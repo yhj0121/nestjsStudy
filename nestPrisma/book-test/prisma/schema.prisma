@@ -45,6 +45,8 @@ model Book {
   publisher  String      @db.VarChar(20)
   author     String      @db.VarChar(10)
   price      Int         @default(0)
+  category_id Int?
+  category     Category?   @relation(fields: [category_id], references: [category_id])
   reViews    Review[]
   carts      Cart[]
   orderInfos OrderInfo[]
@@ -95,4 +97,10 @@ model OrderInfo {
   order Order @relation(fields: [order_id], references: [order_id])
 
   @@id([book_id, order_id])
+}
+
+model Category {
+  category_id Int  @id @default(autoincrement())
+  name String @db.VarChar(10)
+  books Book[]
 }

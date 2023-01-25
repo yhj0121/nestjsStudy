@@ -61,6 +61,10 @@ export class UserController {
 
   @Post('order')
   postOrder(@Body() body) {
-    return this.userService.PostMyCartList(body);
+    return this.userService.postOrder(body);
+  }
+  @Post('category')
+  PostCategory(@Body() body) {
+    return this.userService.CategoryService(body);
   }
 }
