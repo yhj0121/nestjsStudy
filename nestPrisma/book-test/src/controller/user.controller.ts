@@ -64,7 +64,7 @@ export class UserController {
     return this.userService.postOrder(body);
   }
   @Post('category')
-  PostCategory(@Body() body) {
-    return this.userService.CategoryService(body);
+  PostCategory(@Body('name') name) {
+    return this.userService.CategoryService(name);
   }
 }

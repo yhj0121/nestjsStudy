@@ -1,11 +1,17 @@
-import { PrismaService } from './prisma.service';
+import { PrismaService, Prisma } from './prisma.service';
 import { Injectable } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
-
+  //로깅하는 법 queryevent라는 걸 불러서 온다
+  constructor(private readonly prismaService: PrismaService) {
+    prismaService.$on<any>('query', (e: Prisma.QueryEvent) => {
+      console.log(e.query);
+      console.log(e.params);
+      console.log(e.duration);
+    });
+  }
   async getFaker(payload) {
     return await this.prismaService.user.findMany({
       take: 12,
@@ -161,7 +167,21 @@ export class UserService {
 
   async CategoryService(data) {
     return this.prismaService.cart.create({
-      data: {},
+      data: { data },
     });
+  }
+  async getCategoryService(data) {
+    return this.prismaService.cart.findMany({
+      include: {
+        book: true,
+      },
+    });
+  }
+
+  //select 같은경우는 queryRaw
+  //executeRaw는 영향을 받는 행수 update
+
+  async rawQueryTest() {
+    return this.prismaService.$queryRaw(Prisma.sql`SElECT * FROM "BOOK"`);
   }
 }
