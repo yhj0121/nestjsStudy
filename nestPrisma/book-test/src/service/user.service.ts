@@ -184,4 +184,17 @@ export class UserService {
   async rawQueryTest() {
     return this.prismaService.$queryRaw(Prisma.sql`SElECT * FROM "BOOK"`);
   }
+
+  // transaction 사용 방법
+  //보통은 update 에 많이씀
+  async TransactionTest(data) {
+    const update1 = await this.prismaService.$transaction([
+      this.prismaService.user.update({
+        where: {
+          user_id: 1,
+        },
+        data: data,
+      }),
+    ]);
+  }
 }
